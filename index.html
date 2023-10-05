@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Web Scraper</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+
+<body>
+    <button class="btn-gradient-2" id="startScrapingButton">Start Scrapping</button>
+    <button class="btn-gradient-2" id="showPreviousButton">Previous Data</button>
+ 
+    <div id="scrapper" style="display: none">
+        <img src="" alt="User Avatar" class="avatar">
+        <div class="name">
+            <h1 id="page-title"> </h1>
+        </div>
+        <div class="job">
+            <h2 id="current-company"></h2>
+        </div>
+        
+        <p class="description"></p>
+        <!-- <p id="spanCount">Number of Posts extracted<span><span dir="ltr">: <span id="count">0</span></p> -->
+            <div id="loading">
+                <div class="loading_parent">
+                <h1 >Loading</h1>
+                <div class="lds-ellipsis">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+                </div>
+            </div>
+       
+        <div id="response" style="display: none">
+           
+                <div class="interest">
+                    <p id="Interests"></p>
+                </div>
+           
+            <div class="response_child">
+                <h1>Message </h1>
+                <p id="message"></p>
+                <button id="copyMessageButton" style="display: none">Copy Message</button>
+            </div>
+            <div class="response_child">
+                <h1>Profile Summary</h1>
+                <p id="profile"></p>
+            </div>
+           
+        
+           
+            <div class="response_child">
+                <h1>Company Homepage Summary </h1>
+                <p id="Company_Summary"></p>
+            </div>
+        </div>
+        
+        
+    </div>
+    <div class="liberate_labs">
+        <a href="https://liberate-labs.com/" target="_blank">
+            <p class="credit"><span>&#169 &nbsp</span> Liberate Labs <img src="logo.png" alt="Labirate Labs Logo"></p>
+        </a>
+    </div>
+
+    <script src="index.js"></script>
+</body>
+
+</html>
+
+<!-- logo
+name
+company name
+Short about
+Generated Message
+copy Button
+360
+Recipient Three Sixty Profile
+Interests
+ -->

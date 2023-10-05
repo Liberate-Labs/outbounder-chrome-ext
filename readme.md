@@ -2,7 +2,7 @@
 
 
    ```javascript
-git clone <copied url>
+git clone https://github.com/Liberate-Labs/outbounder-chrome-ext.git
 ```
 
 <br>

@@ -18,7 +18,7 @@ function showData() {
   avatarImage.src = prevData.image_source;
 }
 function previousData() {
-  
+
   document.getElementById('loading').style.display = 'none';
   updateMessageAndProfile();
   showData();
@@ -30,12 +30,6 @@ function startScraping() {
   document.getElementById('loading').style.display = 'block';
   let json = {};
   let tabUrl = "";
-  fetch('https://api.ipify.org?format=json')
-    .then(response => response.json())
-    .then(data => {
-      const publicIpAddress = data.ip;
-      console.log('Public IP Address:', publicIpAddress);
-      json["Public_IP_Address"] = publicIpAddress;
   chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
     const tab = tabs[0];
     tabUrl = tab.url;
@@ -61,10 +55,10 @@ function startScraping() {
 
     const currentCompanyRegex = /Current company:\s*(.*?)\s*. Click/i;
     const currentCompanyMatch = result.match(currentCompanyRegex);
-    
-        const companyLogoRegex =
+
+    const companyLogoRegex =
       /<a data-field="experience_company_logo"[^>]*href="([^"]*)"/i;
-    
+
     const imgRegex = /<img[^>]+width="200"[^>]+src="([^"]+)"/i;
     const imgMatch = result.match(imgRegex);
 
@@ -76,8 +70,8 @@ function startScraping() {
       if (avatarImage) {
         prevData["image_source"] = imgSrc;
       }
-      console.log( imgSrc);
-    } 
+      console.log(imgSrc);
+    }
 
     const companyLogoMatch = result.match(companyLogoRegex);
     console.log("companyLogoMatch", companyLogoMatch);
@@ -88,26 +82,26 @@ function startScraping() {
       companyLogoLink = companyLogoMatch[1] + "about/";
       json["Link_Company"] = companyLogoMatch[1];
     }
-   
-    if (titleMatch ) {
+
+    if (titleMatch) {
       prevData["title"] = titleMatch[1];
     }
 
     if (descriptionMatch) {
       prevData["description"] = descriptionMatch[1];
-     
+
     }
-    if (currentCompanyMatch ) {
-      console.log("current_company",currentCompanyMatch[1]);
+    if (currentCompanyMatch) {
+      console.log("current_company", currentCompanyMatch[1]);
       prevData["current_company"] = currentCompanyMatch[1];
     }
-    
+
     localStorage.setItem('prevData', JSON.stringify(prevData));
     json["result"] = result;
     showData();
 
     const recentActivityUrl = tabUrl + "recent-activity/all/";
-  
+
     chrome.scripting.executeScript(
       {
         target: { tabId: tab.id },
@@ -120,8 +114,7 @@ function startScraping() {
         setTimeout(() => {
           scrollPage(tab.id, 16, () => {
             extractDataFromRecentActivityPage(tab.id, recentActivityUrl, () => {
-              if (companyLogoMatch)
-              {
+              if (companyLogoMatch) {
                 chrome.scripting.executeScript(
                   {
                     target: { tabId: tab.id },
@@ -139,8 +132,7 @@ function startScraping() {
                   }
                 );
               }
-              else
-              {
+              else {
                 chrome.scripting.executeScript(
                   {
                     target: { tabId: tab.id },
@@ -157,20 +149,15 @@ function startScraping() {
                     processAndSendData(json, recentActivityUrl);
                   }
                 );
-                
-                }
+
+              }
             });
           });
         }, 5000);
       }
     );
   });
-})
-.catch(error => {
-  console.error('Error fetching IP address:', error);
 
-});
-}
   function extractDataFromCompanyLogoPage(tabId, url) {
     chrome.scripting.executeScript(
       {
@@ -215,7 +202,6 @@ function startScraping() {
                       args: [tabUrl],
                     },
                     () => {
-                      console.log("json",json)
                       processAndSendData(json, url);
                     }
                   );
@@ -298,7 +284,7 @@ function startScraping() {
             countElement.textContent = spanCount;
           }
 
-         
+
           json["resultRecentActivity"] = resultRecentActivity;
           callback();
         } catch (e) {
@@ -306,6 +292,7 @@ function startScraping() {
         }
       }
     );
+  }
 }
 
 function copyMessageToClipboard() {
@@ -341,8 +328,7 @@ function updateMessageAndProfile() {
   }
   const checkData = localStorage.getItem("resData");
   const resData = JSON.parse(checkData);
-  if(resData){
-    const message = resData.message;
+  const message = resData.message;
   const profile = resData.summary;
   const Interests = resData.interest;
   const Company_Summary = resData.website_summary;
@@ -373,7 +359,7 @@ function updateMessageAndProfile() {
         interestItem.style.margin = "0px";
         interestItem.style.maxWidth = "100px";
         interestItem.style.minWidth = "70px";
-  
+
         InterestsElement.appendChild(interestItem);
       });
     } else {
@@ -382,14 +368,13 @@ function updateMessageAndProfile() {
     }
     Company_SummaryElement.textContent = Company_Summary;
   }
-  }
 }
 
 function getRandomDarkerColor() {
   const letters = '0123456789ABCDEF';
   let color = '#';
   for (let i = 0; i < 6; i++) {
-    let randomDigit = Math.floor(Math.random() * 14); 
+    let randomDigit = Math.floor(Math.random() * 14);
     color += letters[randomDigit];
   }
   return color;

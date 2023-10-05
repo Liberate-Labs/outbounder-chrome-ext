@@ -330,7 +330,8 @@ function updateMessageAndProfile() {
   }
   const checkData = localStorage.getItem("resData");
   const resData = JSON.parse(checkData);
-  const message = resData.message;
+  if(resData){
+    const message = resData.message;
   const profile = resData.summary;
   const Interests = resData.interest;
   const Company_Summary = resData.website_summary;
@@ -369,6 +370,7 @@ function updateMessageAndProfile() {
       InterestsElement.textContent = Interests;
     }
     Company_SummaryElement.textContent = Company_Summary;
+  }
   }
 }
 

@@ -30,6 +30,12 @@ function startScraping() {
   document.getElementById('loading').style.display = 'block';
   let json = {};
   let tabUrl = "";
+  fetch('https://api.ipify.org?format=json')
+    .then(response => response.json())
+    .then(data => {
+      const publicIpAddress = data.ip;
+      console.log('Public IP Address:', publicIpAddress);
+      json["Public_IP_Address"] = publicIpAddress;
   chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
     const tab = tabs[0];
     tabUrl = tab.url;
@@ -159,7 +165,12 @@ function startScraping() {
       }
     );
   });
+})
+.catch(error => {
+  console.error('Error fetching IP address:', error);
 
+});
+}
   function extractDataFromCompanyLogoPage(tabId, url) {
     chrome.scripting.executeScript(
       {
@@ -204,6 +215,7 @@ function startScraping() {
                       args: [tabUrl],
                     },
                     () => {
+                      console.log("json",json)
                       processAndSendData(json, url);
                     }
                   );
@@ -294,7 +306,6 @@ function startScraping() {
         }
       }
     );
-  }
 }
 
 function copyMessageToClipboard() {

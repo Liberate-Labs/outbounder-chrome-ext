@@ -1,3 +1,23 @@
+chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+  const tab = tabs[0];
+  if (tab && tab.url) {
+    if (isLinkedInURL(tab.url)) {
+
+      document.getElementById('startScrapingButton').style.display = 'block';
+      document.getElementById('showPreviousButton').style.display = 'block';
+      document.getElementById('checkProfile').style.display = 'none';
+    } else {
+      document.getElementById('startScrapingButton').style.display = 'none';
+      document.getElementById('showPreviousButton').style.display = 'none';
+      document.getElementById('checkProfile').style.display = 'block';
+
+    }
+  }
+});
+
+function isLinkedInURL(url) {
+  return /linkedin\.com/.test(url);
+}
 document.getElementById('startScrapingButton').addEventListener('click', startScraping);
 document.getElementById('showPreviousButton').addEventListener('click', previousData);
 let prevData = {};
@@ -22,14 +42,17 @@ function previousData() {
   document.getElementById('loading').style.display = 'none';
   updateMessageAndProfile();
   showData();
-  // console.log("prevData", prevData.current_company, prevData.description, prevData.image_source, prevData.title);
+
 }
 
 function startScraping() {
-
-  document.getElementById('loading').style.display = 'block';
   let json = {};
   let tabUrl = "";
+
+  const ipAddress = getDeviceIPAddress();
+  console.log("Ip-address", ipAddress);
+  document.getElementById('loading').style.display = 'block';
+
   chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
     const tab = tabs[0];
     tabUrl = tab.url;
@@ -378,4 +401,16 @@ function getRandomDarkerColor() {
     color += letters[randomDigit];
   }
   return color;
+}
+
+function getDeviceIPAddress() {
+  return fetch('http://httpbin.org/ip')
+    .then(response => response.json())
+    .then(data => {
+      return data.origin;
+    })
+    .catch(error => {
+      console.error('Error fetching IP address:', error);
+      return 'Unknown IP Address';
+    });
 }

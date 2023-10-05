@@ -19,7 +19,9 @@ body {
   padding: 30px;
   margin: 30px;
   font-size: 20px;
-  color: rgb(204, 188, 206);
+   color: #e8dee0;
+   text-shadow: 2px 2px 5px #df0531; 
+   box-shadow:2px 2px 7px #df0531;
   background: linear-gradient(135deg, #454565, #475e80, #051918);
   border-radius: 30px;
   border: none;
@@ -251,4 +253,15 @@ img {
 
 .back-button:hover {
   background: linear-gradient(135deg, #2b3c3c, #552f5e, #051918);
+}
+
+#checkProfile {
+  display: block;
+  font-size: 24px;
+  color: #cd5069;
+  text-align: center;
+  margin-top: 30px;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  text-shadow: 2px 2px 5px #df0531; 
 }

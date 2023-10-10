@@ -33,6 +33,7 @@
                 </div>
             </div>
         </div>
+   
 
         <div id="response" style="display: none">
 
@@ -40,10 +41,30 @@
                 <p id="Interests"></p>
             </div>
 
-            <div class="response_child">
+            <div class="response_child"  >
+                
                 <h1>Message </h1>
+                <div id="loading_message" style="display: none">
+                    <div class="loading_parent">
+                        <h1>Generating</h1>
+                        <div class="lds-ellipsis">
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                        </div>
+                    </div>
+                </div>
                 <p id="message"></p>
-                <button id="copyMessageButton" style="display: none">Copy Message</button>
+                <div class="buttonGroup">
+                    <button id="copyMessageButton">Copy Message</button>
+                    <button id="tweakMessageButton" >Tweak</button>
+                </div>
+            </div>
+            <div id="userInput" style="display: none">
+                <textarea id="userInputField" placeholder="Enter message Prompt" ></textarea>
+                <button id="sendDataButton">Generate</button>
+                <button id="cancelButton">Cancel</button>
             </div>
             <div class="response_child">
                 <h1>Profile Summary</h1>

@@ -20,10 +20,12 @@ function isLinkedInURL(url) {
 }
 document.getElementById('startScrapingButton').addEventListener('click', startScraping);
 document.getElementById('showPreviousButton').addEventListener('click', previousData);
+document.getElementById('sendDataButton').addEventListener('click', generateMessage);
 let prevData = {};
 function showData() {
   document.getElementById('startScrapingButton').style.display = 'none';
   document.getElementById('showPreviousButton').style.display = 'none';
+  
   document.getElementById('scrapper').style.display = 'block';
   const avatarImage = document.querySelector(".avatar");
   const pageTitle = document.getElementById("page-title");
@@ -42,6 +44,7 @@ function previousData() {
   document.getElementById('loading').style.display = 'none';
   updateMessageAndProfile();
   showData();
+  document.getElementById('tweakMessageButton').style.display = 'none';
 
 }
 
@@ -242,9 +245,10 @@ function startScraping() {
   async function processAndSendData(data, url) {
     console.log(data, url);
     // https://staging-liblab-chat-api-q4io2.ondigitalocean.app/outbounder/receive-data/
-    // http://localhost:8000/receive-data/
+    //  "http://localhost:8000/receive-data/"
+    // "http://localhost:8000/prompt-message/"
     try {
-      const res = await fetch("https://staging-liblab-chat-api-q4io2.ondigitalocean.app/outbounder/receive-data/", {
+      const res = await fetch("http://localhost:8000/receive-data/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -255,7 +259,7 @@ function startScraping() {
       const resData = await res.json();
       localStorage.setItem('resData', JSON.stringify(resData));
 
-      console.log(resData);
+      console.log("resData",resData);
 
       updateMessageAndProfile();
 
@@ -319,6 +323,7 @@ function startScraping() {
 }
 
 function copyMessageToClipboard() {
+
   const messageElement = document.getElementById("message");
 
   if (messageElement) {
@@ -343,12 +348,28 @@ function updateMessageAndProfile() {
     responseDiv.style.display = "block";
   }
   document.getElementById('loading').style.display = 'none';
+  document.getElementById('tweakMessageButton').style.display = 'block';
 
   const copyButton = document.getElementById("copyMessageButton");
+ 
   if (copyButton) {
-    copyButton.style.display = "block";
     copyButton.addEventListener("click", copyMessageToClipboard);
   }
+  const tweakButton = document.getElementById("tweakMessageButton");
+
+  if (tweakButton) {
+    tweakButton.addEventListener("click", () => {
+      document.getElementById('userInput').style.display = 'block';
+    });
+  }
+
+  const cancelButton = document.getElementById("cancelButton");
+  if (cancelButton) {
+    cancelButton.addEventListener("click", () => {
+      document.getElementById('userInput').style.display = 'none';
+    });
+  }
+
   const checkData = localStorage.getItem("resData");
   const resData = JSON.parse(checkData);
   const message = resData.message;
@@ -391,6 +412,7 @@ function updateMessageAndProfile() {
     }
     Company_SummaryElement.textContent = Company_Summary;
   }
+
 }
 
 function getRandomDarkerColor() {
@@ -407,10 +429,62 @@ function getDeviceIPAddress() {
   return fetch('http://httpbin.org/ip')
     .then(response => response.json())
     .then(data => {
-      return data.origin;
+      return data.origin.PromiseResult;
     })
     .catch(error => {
       console.error('Error fetching IP address:', error);
       return 'Unknown IP Address';
     });
+}
+let data = {}
+function generateMessage() {
+ 
+  const userInputField = document.getElementById('userInputField');
+  const userText = userInputField.value;
+  // console.log(userText);
+  userInputField.value = "";
+  data["prompt_message"] = userText;
+  console.log("prompting",data);
+  sendGeneratedMessage(data);
+  
+}
+
+async function sendGeneratedMessage(data) {
+  document.getElementById('message').style.display = 'none';
+  document.getElementById('loading_message').style.display = 'block';
+  console.log(data);
+  try {
+    const res = await fetch("http://localhost:8000/prompt-message/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ data: data }),
+    });
+
+    const resData = await res.json();
+    localStorage.setItem('generatedData', JSON.stringify(resData));
+    const checkData = localStorage.getItem("generatedData");
+    const responseData = JSON.parse(checkData);
+    const message = responseData.message;
+    const messageElement = document.getElementById("message");
+
+    if (messageElement) {
+      messageElement.textContent = message;
+      document.getElementById('message').style.display = 'block';
+      document.getElementById('loading_message').style.display = 'none';
+      const storedData = localStorage.getItem('resData');
+      const dataObject = JSON.parse(storedData);
+      dataObject.message = message;
+      localStorage.setItem('resData', JSON.stringify(dataObject));
+    }
+
+    
+    console.log(resData);
+
+    
+
+  } catch (error) {
+    console.log(error);
+  }
 }

@@ -21,7 +21,7 @@ body {
   font-size: 20px;
   color: #e8dee0;
   text-shadow: 2px 2px 5px #6c6869;
-  box-shadow: 2px 2px 7px #6c6869;
+  /* box-shadow: 2px 2px 7px #6c6869; */
   background: linear-gradient(135deg, #454565, #475e80, #051918);
   border-radius: 30px;
   border: none;
@@ -243,11 +243,13 @@ img {
   display: flex;
   flex-direction: column;
   align-items: center;
+
 }
 
 #userInputField {
   width: 80%;
   padding: 10px;
+  /* height: 100px; */
   margin-bottom: 10px;
   /* border: 2px solid #ccc; */
   border: none;
@@ -259,3 +261,20 @@ img {
   font-family: Courier New;
 }
 
+.default_guidance-child{
+  width: 200px;
+  text-align: center;
+  padding: 10px 16px;
+  margin: 10px;
+  border-radius: 20px;
+  background-color: rgba(255, 255, 255, 0.1);
+  font-size: 15px;
+   /* transition: all 1s; */
+}
+.default_guidance-child:hover{
+  box-shadow: 0px 10px 9px 3px rgba(20, 20, 20, 0.183); 
+  cursor:pointer;
+}
+.default_guidance-child:active{
+  box-shadow: 2px 2px 5px #4b4a49;
+}

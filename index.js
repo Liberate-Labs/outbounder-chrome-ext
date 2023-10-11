@@ -360,13 +360,17 @@ function updateMessageAndProfile() {
   if (tweakButton) {
     tweakButton.addEventListener("click", () => {
       document.getElementById('userInput').style.display = 'block';
+      document.getElementById('default_guidance').style.display = 'block';
     });
   }
 
   const cancelButton = document.getElementById("cancelButton");
   if (cancelButton) {
     cancelButton.addEventListener("click", () => {
+      const userInputField = document.getElementById("userInputField");
+      userInputField.value = "";
       document.getElementById('userInput').style.display = 'none';
+      document.getElementById('default_guidance').style.display = 'none';
     });
   }
 
@@ -488,3 +492,29 @@ async function sendGeneratedMessage(data) {
     console.log(error);
   }
 }
+
+const defaultOne = document.getElementById("default_one");
+const defaultTwo = document.getElementById("default_two");
+const defaultThree = document.getElementById("default_three");
+const userInputField = document.getElementById("userInputField");
+
+defaultOne.addEventListener("click", function () {
+  data["prompt_message"] = defaultOne.textContent;
+  userInputField.value = defaultOne.textContent;
+  document.getElementById('default_guidance').style.display = 'none';
+  sendGeneratedMessage(data);
+});
+
+defaultTwo.addEventListener("click", function () {
+  data["prompt_message"] = defaultTwo.textContent;
+  userInputField.value = defaultTwo.textContent;
+  document.getElementById('default_guidance').style.display = 'none';
+  sendGeneratedMessage(data);
+});
+
+defaultThree.addEventListener("click", function () {
+  data["prompt_message"] = defaultThree.textContent;
+  userInputField.value = defaultThree.textContent;
+  document.getElementById('default_guidance').style.display = 'none';
+  sendGeneratedMessage(data);
+});

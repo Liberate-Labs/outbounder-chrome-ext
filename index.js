@@ -244,7 +244,7 @@ function startScraping() {
     // https://staging-liblab-chat-api-q4io2.ondigitalocean.app/outbounder/receive-data/
     // http://localhost:8000/receive-data/
     try {
-      const res = await fetch("https://staging-liblab-chat-api-q4io2.ondigitalocean.app/outbounder/receive-data/", {
+      const res = await fetch("https://libchat.careerchai.com/outbounder/receive-data/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
